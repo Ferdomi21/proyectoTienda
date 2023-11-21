@@ -1,6 +1,6 @@
 /*CSS para el login*/
 body.login {
-  background-image: url("login-background.jpg");
+  background-image: url("../images/login-background.jpg");
   background-size: cover;
   background-position: center;
   font-family: Arial, sans-serif;
@@ -8,10 +8,14 @@ body.login {
 
 /*CSS para el registro*/
 body.register {
-  background-image: url('register-background.jpg');
+  background-image: url("../images/register-background.jpg");
   background-size: cover;
   background-position: center;
   font-family: Arial, sans-serif;
+}
+
+.login {
+  margin-top: 5%;
 }
 
 h2 {

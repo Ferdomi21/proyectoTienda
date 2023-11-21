@@ -7,19 +7,18 @@
     <title>Iniciar sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <?php require 'conexion.php' ?>
+    <?php require '../util/conexion.php' ?>
+    <?php require '../util/producto.php' ?>
 </head>
 
 <body>
     <?php
     session_start();
-
+    // Sino estamos registrados nos redirige a la página de login
     if (isset($_SESSION["user"])) {
         $usuario = $_SESSION["user"];
     } else {
-        //header('location: iniciar_sesion.php');
-        $_SESSION["user"] = "invitado";
-        $usuario = $_SESSION["user"];
+        header('location: login.php');
     }
     ?>
     <div class="container">
@@ -27,20 +26,24 @@
         <h2>Bienvenido/a
             <?php echo $usuario ?>
         </h2>
-
-        <a href="cerrar_sesion.php">Cerrar sesión</a>
     </div>
     <nav class="menu">
         <ul>
             <li><a href="#">Inicio</a></li>
             <li><a href="#">Sobre nosotros</a></li>
             <li><a href="#">Contacto</a></li>
+        <li><a href="cerrar_sesion.php">Cerrar sesión</a></li>
         </ul>
     </nav>
 
     <?php
     $sql = "SELECT * FROM productos";
     $resultado = $conexion->query($sql);
+    $productos = array();
+    while ($row = $resultado->fetch_assoc()) {
+        $nuevo_producto = new Producto($row["idProducto"], $row["nombreProducto"], $row["precio"], $row["descripcion"], $row["cantidad"], $row["imagen"]);
+        array_push($productos, $nuevo_producto);
+    }
     ?>
     <table class="table table-info table-hover">
         <thead class="table table-success">
@@ -55,20 +58,17 @@
         </thead>
         <tbody>
             <?php
-            // Guarda la informacion de la primera fila y busca la siguiente
-            while ($row = $resultado->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["idProducto"] . "</td>";
-                echo "<td>" . $row["nombreProducto"] . "</td>";
-                echo "<td>" . $row["precio"] . "</td>";
-                echo "<td>" . $row["descripcion"] . "</td>";
-                echo "<td>" . $row["cantidad"] . "</td>";
-                ?>
-                 <img witdh="50" height="100" src="<?php echo $row["imagen"] ?>">
-                 <?php
-                echo "</tr>";
-            }
-            ?>
+            // Usando las propiedades del objeto "producto" accedemos a los datos de la base de datos
+            foreach ($productos as $producto) { ?>
+                <tr>
+                    <td><?php echo $producto->idProducto; ?></td>
+                    <td><?php echo $producto->nombreProducto; ?></td>
+                    <td><?php echo $producto->precio; ?></td>
+                    <td><?php echo $producto->descripcion; ?></td>
+                    <td><?php echo $producto->cantidad; ?></td>
+                    <td><img width="50" height="100" src="images/<?php echo $producto->imagen; ?>"></td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

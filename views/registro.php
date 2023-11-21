@@ -7,9 +7,9 @@
     <title>Registrarse</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="./styles.css">
-    <?php require 'conexion.php'; ?>
-    <?php require 'depurar.php'; ?>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <?php require '../util/conexion.php'; ?>
+    <?php require '../util/depurar.php'; ?>
 </head>
 
 <body class="register">
@@ -50,28 +50,30 @@
         } else {
             $pass = $temp_pass;
         }
+        $birthDate = "";
         if (empty($temp_fechaNacimiento)) {
             $err_fechaNacimiento = "La fecha de nacimiento es obligatoria";
         } else {
-            // Validar la fecha de nacimiento según tus criterios específicos
-            // Aquí puedes agregar tu lógica de validación personalizada
             $birthDate = $temp_fechaNacimiento;
         }
 
+    }
+
+    if (isset($err_usuario) || isset($err_pass) || isset($err_fechaNacimiento)) {
         $usuario = $temp_usuario;
         $pass = $temp_pass;
-
         $contrasena_cifrada = password_hash($pass, PASSWORD_DEFAULT);
         $sql = "INSERT INTO usuarios (usuario, contrasena, fechaNacimiento)
-         VALUES ('$usuario', '$contrasena_cifrada', '$temp_fechaNacimiento')";
+     VALUES ('$usuario', '$contrasena_cifrada', '$birthDate')";
         $conexion->query($sql);
         $alert_exito = "<div class='alert alert-success mt-5' role='alert'>
-         Cuenta creada con éxito
-         </div>";
+     Cuenta creada con éxito
+     </div>";
     }
 
     ?>
-    <h2>Registrarse</h2>
+    <div class="login">
+    <h2>Registrarse en AllMusic.com</h2>
     <form action="" method="POST" class="mb-3">
         <div class="mb-3">
             <label for="user" class="form-label">Usuario</label>
@@ -103,10 +105,12 @@
         <input type="submit" class="btn btn-info" value="Registrarse">
         <?php if (isset($alert_exito))
             echo $alert_exito ?>
+            <p>Si te has registrado ya puedes loguearte <a href="./login.php">aquí</a></p>
         </form>
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
     </body>
-
+  
     </html>

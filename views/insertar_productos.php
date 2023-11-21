@@ -7,8 +7,8 @@
     <title>Insertar nuevos productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <?php require 'conexion.php'; ?>
-    <?php require 'depurar.php'; ?>
+    <?php require '../util/conexion.php'; ?>
+    <?php require '../util/depurar.php'; ?>
 </head>
 
 <body>
@@ -16,7 +16,6 @@
     session_start();
     if (isset($_SESSION['user'])) {
         if (($_SESSION['rol']) != 'admin') {
-            session_start();
             header("Location:login.php");
         }
     }
@@ -43,6 +42,9 @@
         } else {
             $temp_cantidad = "";
         }
+        $imagen = $_FILES["imagen"]["name"];
+        $imagenFinal = "images/" . $imagen;
+        
         // Validación y patrón de nombres
         if (!strlen($temp_nombre) > 0) {
             $err_nombre = "El nombre es obligatorio";
@@ -86,12 +88,19 @@
                 $cantidad = $temp_cantidad;
             }
         }
+        // Validación de imagen
+        if (!isset($imagen)) {
+            $err_imagen = "La imagen es obligatoria";
+        } else {
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $imagenFinal);
+        }
+
     }
     ?>
     <fieldset>
         <legend>Insertar nuevos productos</legend>
     </fieldset>
-    <form action="" method="POST" class="mb-3">
+    <form action="" method="POST" class="mb-3" enctype="multipart/form-data">
         <label for="exampleFormControlInput1" class="form-label">Nombre producto:</label>
         <input type="text" name="name">
         <?php
@@ -125,7 +134,12 @@
         ?>
         <br><br>
         <label for="image">Imagen:</label>
-        <input type="file" name="image">
+        <input type="file" name="imagen" id="imagen">
+        <?php
+        if (isset($err_imagen)) {
+            echo $err_imagen;
+        }
+        ?>
         <br><br>
         <input type="submit" class="btn btn-primary" value="Subir nuevo producto">
     </form>

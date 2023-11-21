@@ -6,9 +6,9 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <?php require 'conexion.php'; ?>
-    <?php require 'depurar.php'; ?>
-    <link rel="stylesheet" href="./styles.css">
+    <?php require '../util/conexion.php'; ?>
+    <?php require '../util/depurar.php'; ?>
+    <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body class="login"></body>
     <?php
@@ -59,7 +59,8 @@
         }
     }
     ?>
-    <h2>Login</h2>
+    <div class = "login">
+    <h2>Bienvenidos a AllMusic.com</h2>
     <form action="" method="POST" class="mb-3">
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Usuario</label>
@@ -70,7 +71,8 @@
             <input type="password" name="pass">
         </div>
         <input type="submit" class="btn btn-info" value="Iniciar sesión">
-        <p>¿Tienes cuenta de usuario? Sino registrate <a href="./registro.php">aquí</a></p>
+        <p>Sino tiene cuenta de usuario registrate <a href="./registro.php">aquí</a></p>
     </form>
+    </div>
 </body>
 </html>
