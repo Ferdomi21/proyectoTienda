@@ -9,6 +9,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <?php require '../util/conexion.php'; ?>
     <?php require '../util/depurar.php'; ?>
+    <link rel="stylesheet" href="./styles/styles.css">
 </head>
 
 <body>
@@ -44,7 +45,7 @@
         }
         $imagen = $_FILES["imagen"]["name"];
         $imagenFinal = "images/" . $imagen;
-        
+
         // Validación y patrón de nombres
         if (!strlen($temp_nombre) > 0) {
             $err_nombre = "El nombre es obligatorio";
@@ -97,63 +98,78 @@
 
     }
     ?>
-    <fieldset>
-        <legend>Insertar nuevos productos</legend>
-    </fieldset>
-    <form action="" method="POST" class="mb-3" enctype="multipart/form-data">
-        <label for="exampleFormControlInput1" class="form-label">Nombre producto:</label>
-        <input type="text" name="name">
-        <?php
-        if (isset($err_nombre)) {
-            echo $err_nombre;
-        }
-        ?>
-        <br><br>
-        <label for="price">Precio:</label>
-        <input type="text" name="price">
-        <?php
-        if (isset($err_precio)) {
-            echo $err_precio;
-        }
-        ?>
-        <br><br>
-        <label for="description">Descripción:</label>
-        <input type="text" name="description">
-        <?php
-        if (isset($err_descripcion)) {
-            echo $err_descripcion;
-        }
-        ?>
-        <br><br>
-        <label for="amount">Cantidad:</label>
-        <input type="text" name="amount">
-        <?php
-        if (isset($err_cantidad)) {
-            echo $err_cantidad;
-        }
-        ?>
-        <br><br>
-        <label for="image">Imagen:</label>
-        <input type="file" name="imagen" id="imagen">
-        <?php
-        if (isset($err_imagen)) {
-            echo $err_imagen;
-        }
-        ?>
-        <br><br>
-        <input type="submit" class="btn btn-primary" value="Subir nuevo producto">
-    </form>
-    <?php
-    if (isset($nombre) && isset($precio) && isset($descripcion) && isset($cantidad) && isset($imagen)) {
-        echo "<h3>¡Producto introducido con éxito!</h3>";
+    <div class=container>
+        <h1>Insertar nuevos productos</h1>
+        <nav class="navigator">
+            <ul>
+                <li><a href="principal.php">Inicio</a></li>
+                <?php
+                if (!isset($_SESSION["usuario"])) {
+                    echo "<li><a href='cerrar_sesion.php'>Cerrar sesion</a></li>";
+                } else {
+                    echo "<li><a href='cesta.php'>Cesta</a></li>";
+                }
+                ?>
 
-        $sql = "INSERT INTO productos VALUES (null,'$nombre', '$precio', '$descripcion', '$cantidad', '$imagen')";
+            </ul>
+        </nav>
 
-        $conexion->query($sql);
-    }
-    ?>
+        <form action="" method="POST" class="mb-3" enctype="multipart/form-data">
+            <label for="exampleFormControlInput1" class="form-label">Nombre producto:</label>
+            <input type="text" name="name">
+            <?php
+            if (isset($err_nombre)) {
+                echo $err_nombre;
+            }
+            ?>
+            <br><br>
+            <label for="price">Precio:</label>
+            <input type="text" name="price">
+            <?php
+            if (isset($err_precio)) {
+                echo $err_precio;
+            }
+            ?>
+            <br><br>
+            <label for="description">Descripción:</label>
+            <input type="text" name="description">
+            <?php
+            if (isset($err_descripcion)) {
+                echo $err_descripcion;
+            }
+            ?>
+            <br><br>
+            <label for="amount">Cantidad:</label>
+            <input type="text" name="amount">
+            <?php
+            if (isset($err_cantidad)) {
+                echo $err_cantidad;
+            }
+            ?>
+            <br><br>
+            <label for="image">Imagen:</label>
+            <input type="file" name="imagen" id="imagen">
+            <?php
+            if (isset($err_imagen)) {
+                echo $err_imagen;
+            }
+            ?>
+            <br><br>
+            <input type="submit" class="btn btn-primary" value="Subir nuevo producto">
+        </form>
+        <?php
+        if (isset($nombre) && isset($precio) && isset($descripcion) && isset($cantidad) && isset($imagen)) {
+            echo "<h3>¡Producto introducido con éxito!</h3>";
+
+            $sql = "INSERT INTO productos VALUES (null,'$nombre', '$precio', '$descripcion', '$cantidad', '$imagen')";
+
+            $conexion->query($sql);
+        }
+        ?>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

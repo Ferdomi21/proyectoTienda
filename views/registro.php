@@ -14,6 +14,9 @@
 
 <body class="register">
     <?php
+    $temp_usuario = "";
+    $temp_pass = "";
+    $birthDate = "";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST["user"])) {
             $temp_usuario = depurar($_POST["user"]);
@@ -59,18 +62,17 @@
 
     }
 
-    if (isset($err_usuario) || isset($err_pass) || isset($err_fechaNacimiento)) {
+    if (!isset($err_usuario) && !isset($err_pass) && !isset($err_fechaNacimiento) && !empty($birthDate)) {
         $usuario = $temp_usuario;
         $pass = $temp_pass;
         $contrasena_cifrada = password_hash($pass, PASSWORD_DEFAULT);
         $sql = "INSERT INTO usuarios (usuario, contrasena, fechaNacimiento)
-     VALUES ('$usuario', '$contrasena_cifrada', '$birthDate')";
+        VALUES ('$usuario', '$contrasena_cifrada', '$birthDate')";
         $conexion->query($sql);
         $alert_exito = "<div class='alert alert-success mt-5' role='alert'>
-     Cuenta creada con éxito
-     </div>";
+        Cuenta creada con éxito
+        </div>";
     }
-
     ?>
     <div class="login">
     <h2>Registrarse en AllMusic.com</h2>
